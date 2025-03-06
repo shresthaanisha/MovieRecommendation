@@ -1,0 +1,38 @@
+{% include "header.html" %}
+
+{% block body %}
+<div class="panel-heading">
+    <h2>Edit Movie <a class="pull-right btn btn-success" href="{{ url_for('admin') }}">Back</a></h2>
+</div>
+
+<div class="panel-body">
+    <form action="{{ url_for('update', id_data=movie[0]) }}" method="POST">
+        <div class="form-group">
+            <label for="title">Movie Title</label>
+            <input type="text" class="form-control" name="title" id="title" value="{{ movie[1] }}" required="1">
+        </div>
+
+        <div class="form-group">
+            <label for="overview">Movie Overview</label>
+            <textarea class="form-control" name="overview" id="overview" required="1">{{ movie[2] }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="vote_count">Vote Count</label>
+            <input type="number" class="form-control" name="vote_count" id="vote_count" value="{{ movie[3] }}" required="1">
+        </div>
+
+        <div class="form-group">
+            <label for="vote_average">Vote Average</label>
+            <input type="number" step="0.1" class="form-control" name="vote_average" id="vote_average" value="{{ movie[4] }}" required="1">
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" name="submit" value="Update Movie">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% include "footer.html" %}

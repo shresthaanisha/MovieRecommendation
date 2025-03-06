@@ -1,0 +1,114 @@
+{% block content %}
+<div class="container" 
+     style="max-width: 800px; margin: 50px auto; padding: 20px; border: 1px solid #ddd; 
+            border-radius: 8px; background-color: #f9f9f9; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+  <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Admin Dashboard</h2>
+
+  {% if message %}
+  <div style="color: #28a745; background-color: #d4edda; border: 1px solid #c3e6cb; 
+              padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+    {{ message }}
+  </div>
+  {% endif %}
+
+  <form action="/admindashboard" method="POST" 
+        style="display: flex; flex-wrap: wrap; gap: 20px; row-gap: 15px;">
+    <!-- Row 1 -->
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="show_id" style="font-weight: bold; color: #555;">Show ID</label>
+      <input type="text" id="show_id" name="show_id" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;" required>
+    </div>
+
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="type" style="font-weight: bold; color: #555;">Type</label>
+      <input type="text" id="type" name="type" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;" required>
+    </div>
+
+    <!-- Row 2 -->
+    <div style="flex: 1 1 100%;">
+      <label for="title" style="font-weight: bold; color: #555;">Title</label>
+      <input type="text" id="title" name="title" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;" required>
+    </div>
+
+    <!-- Row 3 -->
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="director" style="font-weight: bold; color: #555;">Director</label>
+      <input type="text" id="director" name="director" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="cast" style="font-weight: bold; color: #555;">Cast</label>
+      <input type="text" id="cast" name="cast" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <!-- Row 4 -->
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="country" style="font-weight: bold; color: #555;">Country</label>
+      <input type="text" id="country" name="country" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="date_added" style="font-weight: bold; color: #555;">Date Added</label>
+      <input type="text" id="date_added" name="date_added" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <!-- Row 5 -->
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="release_year" style="font-weight: bold; color: #555;">Release Year</label>
+      <input type="number" id="release_year" name="release_year" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;" required>
+    </div>
+
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="rating" style="font-weight: bold; color: #555;">Rating</label>
+      <input type="text" id="rating" name="rating" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <!-- Row 6 -->
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="duration" style="font-weight: bold; color: #555;">Duration</label>
+      <input type="text" id="duration" name="duration" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <div style="flex: 1 1 calc(50% - 10px);">
+      <label for="listed_in" style="font-weight: bold; color: #555;">Category</label>
+      <input type="text" id="listed_in" name="listed_in" class="form-control" 
+             style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                    border-radius: 5px;">
+    </div>
+
+    <!-- Row 7 -->
+    <div style="flex: 1 1 100%;">
+      <label for="description" style="font-weight: bold; color: #555;">Description</label>
+      <textarea id="description" name="description" rows="4" class="form-control" 
+                style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; 
+                       border-radius: 5px;"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-dark" 
+            style="background-color: #333; color: white; padding: 10px 20px; border: none; 
+                   border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 15px;">
+      Add Entry
+    </button>
+  </form>
+</div>
+{% endblock %}

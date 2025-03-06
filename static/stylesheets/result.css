@@ -1,0 +1,97 @@
+
+
+/*body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;}*/
+/*a, h1, h2       { color: #377ba8; }*/
+/*h1, h2          { margin: 0; }*/
+/*h1              { border-bottom: 2px solid #eee; }*/
+/*h2              { font-size: 1.2em; }*/
+
+/*.page {*/
+/*	*/
+/*  margin-left: auto;*/
+/*  margin-right: auto;*/
+
+/*}	*/
+
+/*table.dataframe, .dataframe th, .dataframe td {*/
+/*  border: none;*/
+/*  border-bottom: 1px solid #C8C8C8;*/
+/*  border-collapse: collapse;*/
+/*  text-align:center;*/
+/*  padding: 10px;*/
+/*  margin-bottom: 40px;*/
+/*  font-size: 0.9em;*/
+/*  opacity: 90%;*/
+/*}*/
+
+/*tr:nth-child(odd)	{ background-color:#eee; }*/
+/*tr:nth-child(even)	{ background-color:#fff; }*/
+/*tr:hover            { background-color: #ffff99;}*/
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-top: 30px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            color: #555;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #777;
+        }
+

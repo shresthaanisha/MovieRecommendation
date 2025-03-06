@@ -1,0 +1,4 @@
+
+show_id,type,title,director,cast,country,date_added,release_year,rating,duration,listed_in,description,soup
+
+ba019e47-ab51-4d7f-9e25-2f31253761bc,,attackontitan,"tetsurōaraki,masashikoizuka","yukikaji,marinainoue,kazuyanakai,yuukikaji,yoshimasahosoya,hiroshikamiya",,,,,,"action&adventure,animation,anime,sci-fi&fantasy",iafiasdfiasdfi,"attackontitan tetsurōaraki,masashikoizuka yukikaji,marinainoue,kazuyanakai,yuukikaji,yoshimasahosoya,hiroshikamiya action&adventure,animation,anime,sci-fi&fantasy iafiasdfiasdfi"

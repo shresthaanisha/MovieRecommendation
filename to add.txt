@@ -1,0 +1,4 @@
+80162179,Movie,camerastore,scottmarshallsmith,"johnlarroquette,johnrhys-davies,paulben-victor,davidjameselliott,laurasilverman,cherylladd,justinlieberman,maddiemccormick",United States,20-Aug-17,2016.0,TV-MA,104 min,"comedies,dramas",
+"withthedigitalrevolutionjustaroundthecorner,theemployeesofbibideauxcamerastorestrivetostayrelevantamidunstoppablechange.",
+"camerastore scottmarshallsmith johnlarroquette,johnrhys-davies,paulben-victor,davidjameselliott,laurasilverman,cherylladd,justinlieberman,maddiemccormick comedies,dramas withthedigitalrevolutionjustaroundthecorner,
+theemployeesofbibideauxcamerastorestrivetostayrelevantamidunstoppablechange."

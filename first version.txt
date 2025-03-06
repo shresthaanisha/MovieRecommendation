@@ -1,0 +1,178 @@
+
+import pandas as pd
+from flask import Flask, render_template,request,redirect, url_for, session, flash
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from flask_sqlalchemy import SQLAlchemy
+import random
+import pickle
+from flask_wtf import FlaskForm
+from wtforms import StringField,PasswordField,SubmitField
+from wtforms.validators import DataRequired, Email, ValidationError
+import bcrypt
+from flask_mysqldb import MySQL
+
+def clean_data(x):
+    return str.lower(x.replace(" ", ""))
+
+def create_soup(x):
+    return x['title']+ ' ' + x['director'] + ' ' + x['cast'] + ' ' +x['listed_in']+' '+ x['description']
+
+def get_recommendations(title, cosine_sim):
+    global result
+    title=title.replace(' ','').lower()
+    idx = indices[title]
+    # computing similarity scores with other movies
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:11]
+    movie_indices = [i[0] for i in sim_scores]
+    result =  netflix_overall['title'].iloc[movie_indices] #Extract their titles, format the output as a DataFrame, and return.
+    result = result.to_frame()
+    result = result.reset_index()
+    del result['index']
+    return result
+
+netflix_overall = pd.read_csv('netflix_titles.csv')
+netflix_data = pd.read_csv('netflix_titles.csv')
+netflix_data = netflix_data.fillna('')
+
+new_features = ['title', 'director', 'cast', 'listed_in', 'description']
+netflix_data = netflix_data[new_features]
+for new_features in new_features:
+    netflix_data[new_features] = netflix_data[new_features].apply(clean_data)
+netflix_data['soup'] = netflix_data.apply(create_soup, axis=1)
+count = CountVectorizer(stop_words='english')
+count_matrix = count.fit_transform(netflix_data['soup'])
+global cosine_sim2
+cosine_sim2 = cosine_similarity(count_matrix, count_matrix)
+netflix_data=netflix_data.reset_index()
+indices = pd.Series(netflix_data.index, index=netflix_data['title'])
+#get_recommendations('PK', cosine_sim2)
+
+# import trained model
+popular_df = pickle.load(open('popular_movie_df.pkl', 'rb'))
+movie = popular_df.sort_values(by='avg_vote', ascending=False)[:50]
+
+
+app = Flask(__name__)
+
+
+# MySQL Configuration
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'mydatabase'
+app.secret_key = 'your_secret_key_here'
+
+mysql = MySQL(app)
+
+class RegisterForm(FlaskForm):
+    name = StringField("Name",validators=[DataRequired()])
+    email = StringField("Email",validators=[DataRequired(), Email()])
+    password = PasswordField("Password",validators=[DataRequired()])
+    submit = SubmitField("Register")
+
+    def validate_email(self,field):
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM users where email=%s",(field.data,))
+        user = cursor.fetchone()
+        cursor.close()
+        if user:
+            raise ValidationError('Email Already Taken')
+
+class LoginForm(FlaskForm):
+    email = StringField("Email",validators=[DataRequired(), Email()])
+    password = PasswordField("Password",validators=[DataRequired()])
+    submit = SubmitField("Login")
+
+
+@app.route('/')
+def front():
+    # Load the movie data (make sure this file exists and is correct)
+    popular_df = pickle.load(open('popular_movie_df.pkl', 'rb'))
+
+    # Sort by 'avg_vote' and take the top 50 movies
+    movie = popular_df.sort_values(by='avg_vote', ascending=False).head(8)
+
+    # Convert the DataFrame to a list of dictionaries
+    top_movies = movie.to_dict('records')
+
+    # Render the front.html template with the top movies data
+    return render_template('front.html', movies=top_movies)
+@app.route("/index")
+def index():
+    return render_template('index.html')
+@app.route('/register',methods=['GET','POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        password = form.password.data
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
+
+        # store data into database
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO users (name,email,password) VALUES (%s,%s,%s)",(name,email,hashed_password))
+        mysql.connection.commit()
+        cursor.close()
+
+        return redirect(url_for('front'))
+
+    return render_template('register.html',form=form)
+
+
+
+
+
+@app.route('/about',methods=['POST'])
+def getvalue():
+    moviename = request.form['moviename']
+    get_recommendations(moviename,cosine_sim2)
+    df=result
+    return render_template('result.html',  tables=[df.to_html(classes='data')], titles=df.columns.values)
+
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' in session:
+        user_id = session['user_id']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM users where id=%s", (user_id,))
+        user = cursor.fetchone()
+        cursor.close()
+
+        if user:
+            return render_template('dashboard.html', user=user)
+
+    return redirect(url_for('index'))
+@app.route('/login',methods=['GET','POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM users WHERE email=%s",(email,))
+        user = cursor.fetchone()
+        cursor.close()
+        if user and bcrypt.checkpw(password.encode('utf-8'), user[3].encode('utf-8')):
+            session['user_id'] = user[0]
+            return redirect(url_for('dashboard'))
+        else:
+            flash("Login failed. Please check your email and password")
+            return redirect(url_for('login'))
+
+    return render_template('login.html',form=form)
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash("You have been logged out successfully.")
+    return redirect(url_for('login'))
+
+if __name__ == '__main__':
+    app.run(debug=False)
